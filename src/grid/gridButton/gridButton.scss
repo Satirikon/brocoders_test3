@@ -1,0 +1,45 @@
+.action-btn {
+  background-color: #999999;
+  cursor: pointer;
+  position: absolute;
+  color: #ffffff;
+  font-size: 20px;
+  transition: .3s linear;
+  border: #ffffff 1px solid;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.7;
+  }
+  &.del-btn-col, &.del-btn-row {
+    background-color: darkred;
+    display: none;
+  }
+
+  &.del-btn-col {
+    top:0;
+  }
+
+  &.del-btn-row {
+    left: 0;
+  }
+
+  &.add-btn-col, &.add-btn-row {
+    background-color: orange;
+  }
+  &.add-btn-row {
+    right: 0;
+    margin-top: 3px;
+  }
+
+  &.add-btn-col {
+    bottom: 0;
+    margin-left: 3px;
+  }
+}
+
+
+

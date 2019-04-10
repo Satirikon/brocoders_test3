@@ -1,0 +1,19 @@
+.grid-root {
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+  border: deepskyblue 1px solid;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    .column {
+      height: 100%;
+      background-color: deepskyblue;
+      border: #ffffff 1px solid;
+    }
+  }
+}
+
+
+
