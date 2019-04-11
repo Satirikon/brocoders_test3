@@ -1,18 +1,25 @@
-import React, {Component, createRef, cloneElement} from 'react';
+import React, {Component, createRef } from 'react';
+import GridFields from './gridField/gridFields';
+import GridButtons from './gridButton/gridButtons';
+
 import './grid.scss';
-import ReactDOM from 'react-dom';
-import GridField from './gridField/gridField'
-import GridButtons from './gridButton/gridButton'
 
 class Grid extends Component {
   static delButtonRowRef = createRef();
   static delButtonColRef = createRef();
+
   state = {
-    currentColumn: null
+    rows: [],
+    columns: [],
+    activeIndexes: [0, 0]
   };
 
   constructor(props) {
     super(props);
+
+    this.state.rows = [...Array(props.initialHeight)];
+    this.state.columns = [...Array(props.initialWidth)];
+
     this.hideDelButtons = this.hideDelButtons.bind(this);
     this.onColMouseOver = this.onColMouseOver.bind(this);
     this.onGridMouseLeave = this.onGridMouseLeave.bind(this);
@@ -22,23 +29,25 @@ class Grid extends Component {
     this.onDelRowClick = this.onDelRowClick.bind(this);
   }
 
-  hideDelButtons = () => {
-    Grid.delButtonColRef.current.style.display = Grid.delButtonRowRef.current.style.display = 'none';
-  };
+  hideDelButtons = () => Grid.delButtonColRef.current.style.display = Grid.delButtonRowRef.current.style.display = 'none';
 
-  onColMouseOver = (e) => {
+  onColMouseOver = (e, rowIndex, colIndex) => {
     const currentColumn = e.target;
-    if (currentColumn.parentNode.children.length > 1) {
+    const {rows, columns} = this.state;
+
+    if (columns.length > 1) {
       const {style} = Grid.delButtonColRef.current;
       style.left = `${currentColumn.offsetLeft}px`;
       style.display = 'inline';
     }
-    if (currentColumn.parentNode.parentNode.children.length > 1) {
+
+    if (rows.length > 1) {
       const {style} = Grid.delButtonRowRef.current;
       style.top = `${currentColumn.offsetTop}px`;
       style.display = 'inline';
     }
-    this.setState({currentColumn});
+
+    this.setState({activeIndexes: [rowIndex, colIndex]});
   };
 
   onGridMouseLeave = () => {
@@ -50,47 +59,35 @@ class Grid extends Component {
   };
 
   onAddColClick = () => {
-    const {currentColumn} = this.state;
-    const rows = currentColumn.parentNode.parentNode.childNodes;
-    for (let row of rows){
-      row.appendChild(currentColumn.cloneNode(true));
-    }
+    const {columns} = this.state;
+    this.setState({columns: [...columns, columns[0]]});
   };
+
   onAddRowClick = () => {
-    const {currentColumn} = this.state;
-    const clonedRow = currentColumn.parentNode.cloneNode(true);
-    currentColumn.parentNode.parentNode.appendChild(clonedRow);
+    const {rows} = this.state;
+    this.setState({rows: [...rows, rows[0]]});
   };
 
-onDelColClick = () =>{
-  const {currentColumn} = this.state;
-  const parent = currentColumn.parentNode;
-  const index = Array.from(parent.childNodes).indexOf(currentColumn,0);
-  const rows = currentColumn.parentNode.parentNode.childNodes;
-  for (let row of rows){
-    row.childNodes[index].remove();
-  }
-  if(parent.childNodes.length <= 1 || !parent.childNodes[index]){
-    this.hideDelButtons();
-  } else {
-    this.setState({currentColumn: parent.childNodes[index]});
-  }
-};
+  onDelColClick = () => {
+    const {columns, activeIndexes} = this.state;
+    columns.splice(activeIndexes[1], 1);
+    this.setState({columns});
 
-onDelRowClick = () =>{
-  const {currentColumn} = this.state;
-  const parent = currentColumn.parentNode;
-  const newParent = parent.nextSibling;
-  parent.remove();
-  if(!newParent || newParent.parentNode.childNodes.length <=1){
-    this.hideDelButtons();
-  } else{
-    this.setState({currentColumn: newParent.childNodes[0]});
-  }
-};
+    if (columns.length === activeIndexes[1] || columns.length === 1) this.hideDelButtons();
+  };
+
+  onDelRowClick = () => {
+    const {rows, activeIndexes} = this.state;
+    rows.splice(activeIndexes[0], 1);
+    this.setState({rows});
+
+    if (rows.length === activeIndexes[0] || rows.length === 1) this.hideDelButtons();
+  };
 
   render() {
-    const {initialWidth, initialHeight, cellSize} = this.props;
+    const {cellSize} = this.props;
+    const {rows, columns} = this.state;
+
     return (
       <div className="grid">
         <GridButtons
@@ -102,14 +99,13 @@ onDelRowClick = () =>{
           onDelColClick={this.onDelColClick}
           onDelRowClick={this.onDelRowClick}
         />
-        <GridField
-          initialWidth={initialWidth}
-          initialHeight={initialHeight}
+        <GridFields
+          rows={rows}
+          columns={columns}
           cellSize={cellSize}
           onColMouseOver={this.onColMouseOver}
           onGridMouseLeave={this.onGridMouseLeave}
         />
-
       </div>
     );
   }
