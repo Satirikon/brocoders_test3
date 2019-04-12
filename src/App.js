@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Grid from './grid/grid';
+import Grid from './grid/Grid';
 
 class App extends Component {
 

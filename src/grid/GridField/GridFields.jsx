@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './gridFields.scss';
+import './GridFields.scss';
 
 const GridColumn = ({cellSize, onColMouseOver, rowIndex, colIndex}) => (
   <div
@@ -11,7 +11,7 @@ const GridColumn = ({cellSize, onColMouseOver, rowIndex, colIndex}) => (
 
 const GridRow = ({columns, cellSize, onColMouseOver, rowIndex}) => (
   <div className="row">
-    {[...columns.keys()].map((index) => {
+    {columns.map((value, index) => {
       return <GridColumn
         key={index}
         cellSize={cellSize}
@@ -25,7 +25,7 @@ const GridRow = ({columns, cellSize, onColMouseOver, rowIndex}) => (
 
 const GridFields = ({cellSize, onColMouseOver, onGridMouseLeave, rows, columns}) => (
   <div className="grid-root" onMouseLeave={onGridMouseLeave}>
-    {[...rows.keys()].map((index) => {
+    {rows.map((value, index) => {
       return <GridRow
         key={index}
         columns={columns}
