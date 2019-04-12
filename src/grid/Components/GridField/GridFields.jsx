@@ -13,7 +13,7 @@ const GridRow = ({columns, cellSize, onColMouseOver, rowIndex}) => (
   <div className="row">
     {columns.map((value, index) => {
       return <GridColumn
-        key={index}
+        key={value}
         cellSize={cellSize}
         rowIndex={rowIndex}
         colIndex={index}
@@ -27,7 +27,7 @@ const GridFields = ({cellSize, onColMouseOver, onGridMouseLeave, rows, columns})
   <div className="grid-root" onMouseLeave={onGridMouseLeave}>
     {rows.map((value, index) => {
       return <GridRow
-        key={index}
+        key={value}
         columns={columns}
         cellSize={cellSize}
         rowIndex={index}

@@ -1,0 +1,1 @@
+export const getUniqValue = (index) => `${new Date().getTime()}_${index}`;

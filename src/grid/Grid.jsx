@@ -1,42 +1,36 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import GridFields from './GridField/GridFields';
-import ActionButton from './ActionButton/ActionButton';
+import GridFields from './Components/GridField/GridFields';
+import ActionButton from './Components/ActionButton/ActionButton';
+import {getUniqValue} from './grid.service';
 
 import './Grid.scss';
 
 class Grid extends Component {
-
-
   constructor(props) {
     super(props);
-
     this.state = {
-      rows: [...Array(props.initialHeight)],
-      columns: [...Array(props.initialWidth)],
+      rows: [...Array(props.initialHeight).keys()].map((index)=>getUniqValue(index)),
+      columns: [...Array(props.initialWidth).keys()].map((index)=>getUniqValue(index)),
       activeIndexes: [0, 0],
-      delBtnStyles: [{top: 0, display: "none"}, {left: 0, display: "none"}]
+      delBtnStyles: [{top: 0, display: 'none'}, {left: 0, display: 'none'}]
     };
-
   }
 
   hideDelButtons = () => {
-    this.setState({delBtnStyles: [{top: 0, display: "none"}, {left: 0, display: "none"}]});
+    this.setState({delBtnStyles: [{top: 0, display: 'none'}, {left: 0, display: 'none'}]});
   };
 
   onColMouseOver = (e, rowIndex, colIndex) => {
     const currentColumn = e.target;
-    const {rows, columns, delBtnStyles} = this.state;
-    let newState = {activeIndexes: [rowIndex, colIndex], delBtnStyles};
-
+    const {rows, columns} = this.state;
+    let newState = {...this.state, activeIndexes: [rowIndex, colIndex]};
     if (columns.length > 1) {
       newState.delBtnStyles[1] = {left:`${currentColumn.offsetLeft}px`, display: 'inline'};
     }
-
     if (rows.length > 1) {
       newState.delBtnStyles[0] = {top:`${currentColumn.offsetTop}px`, display: 'inline'};
     }
-
     this.setState(newState);
   };
 
@@ -49,12 +43,12 @@ class Grid extends Component {
 
   onAddColClick = () => {
     const {columns} = this.state;
-    this.setState({columns: [...columns, columns[0]]});
+    this.setState({columns: [...columns, getUniqValue(columns[0])]});
   };
 
   onAddRowClick = () => {
     const {rows} = this.state;
-    this.setState({rows: [...rows, rows[0]]});
+    this.setState({rows: [...rows, getUniqValue(rows[0])]});
   };
 
   onDelColClick = () => {
