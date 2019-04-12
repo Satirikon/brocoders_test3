@@ -30,12 +30,12 @@
   &.add-btn-col, &.add-btn-row {
     background-color: orange;
   }
-  &.add-btn-row {
+  &.add-btn-col {
     right: 0;
     margin-top: 3px;
   }
 
-  &.add-btn-col {
+  &.add-btn-row {
     bottom: 0;
     margin-left: 3px;
   }

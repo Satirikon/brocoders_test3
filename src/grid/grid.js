@@ -70,6 +70,7 @@ class Grid extends Component {
 
   onDelColClick = () => {
     const {columns, activeIndexes} = this.state;
+    if (columns.length === 1) return;
     columns.splice(activeIndexes[1], 1);
     this.setState({columns});
 
@@ -78,6 +79,7 @@ class Grid extends Component {
 
   onDelRowClick = () => {
     const {rows, activeIndexes} = this.state;
+    if (rows.length === 1) return;
     rows.splice(activeIndexes[0], 1);
     this.setState({rows});
 

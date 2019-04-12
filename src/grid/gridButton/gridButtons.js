@@ -16,11 +16,11 @@ const GridButtons = ({cellSize, delButtonColRef, delButtonRowRef, onAddRowClick,
     <ActionButton
       className="add-btn-row"
       cellSize={cellSize}
-      onClick={onAddColClick}/>
+      onClick={onAddRowClick}/>
     <ActionButton
       className="add-btn-col"
       cellSize={cellSize}
-      onClick={onAddRowClick}/>
+      onClick={onAddColClick}/>
     <ActionButton
       className="del-btn-row"
       cellSize={cellSize}
