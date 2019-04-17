@@ -6,7 +6,7 @@ const GridColumn = ({ cellSize, onColMouseOver, rowIndex, colIndex }) => (
   <div
     className="column"
     style={{ height: `${cellSize}px`, width: `${cellSize}px` }}
-    onMouseOver={e => onColMouseOver(e, rowIndex, colIndex)}
+    onMouseOver={() => onColMouseOver(rowIndex, colIndex)}
   />
 );
 

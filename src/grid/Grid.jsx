@@ -6,7 +6,7 @@ import { getUniqValue } from './grid.service';
 import './Grid.scss';
 import PropTypes from 'prop-types';
 
-const BUTTON_PADDING = 5;
+const BUTTON_MARGIN = 5;
 
 class Grid extends Component {
   constructor(props) {
@@ -27,34 +27,25 @@ class Grid extends Component {
     };
   }
 
-  clearTimer = () => (this.timer = null);
+  clearTimer = () => clearTimeout(this.timer);
 
   hideDelButtons = () =>
     this.setState({
       isDelBtnRowVisible: false,
-      isDelBtnColVisible: false,
-      isDelBtnHovered: false
+      isDelBtnColVisible: false
     });
 
-  onColMouseOver = (e, rowIndex, colIndex) => {
+  onColMouseOver = (rowIndex, colIndex) => {
     const { rows, columns } = this.state;
-    let newState = {
+    this.setState({
       activeRowIndex: rowIndex,
-      activeColumnIndex: colIndex
-    };
-
-    if (columns.length > 1) newState.isDelBtnColVisible = true;
-
-    if (rows.length > 1) newState.isDelBtnRowVisible = true;
-
-    this.setState(newState);
+      activeColumnIndex: colIndex,
+      isDelBtnColVisible: columns.length > 1,
+      isDelBtnRowVisible: rows.length > 1
+    });
   };
 
-  onGridMouseLeave = () => {
-    this.timer = setTimeout(() => {
-      if (this.timer) this.hideDelButtons();
-    }, 200);
-  };
+  onGridMouseLeave = () => (this.timer = setTimeout(this.hideDelButtons, 200));
 
   onAddColClick = () =>
     this.setState(prevState => ({
@@ -98,7 +89,7 @@ class Grid extends Component {
     } = this.state;
 
     return (
-      <div className="grid">
+      <div className="grid" style={{ padding: `${cellSize + 2}px` }}>
         <ActionButton
           className="add-btn-row"
           cellSize={cellSize}
@@ -115,7 +106,7 @@ class Grid extends Component {
             cellSize={cellSize}
             text="-"
             style={{
-              top: `${(activeRowIndex + 1) * cellSize + BUTTON_PADDING}px`
+              top: `${(activeRowIndex + 1) * cellSize + BUTTON_MARGIN}px`
             }}
             onMouseEnter={this.clearTimer}
             onMouseLeave={this.hideDelButtons}
@@ -128,7 +119,7 @@ class Grid extends Component {
             cellSize={cellSize}
             text="-"
             style={{
-              left: `${(activeColumnIndex + 1) * cellSize + BUTTON_PADDING}px`
+              left: `${(activeColumnIndex + 1) * cellSize + BUTTON_MARGIN}px`
             }}
             onMouseEnter={this.clearTimer}
             onMouseLeave={this.hideDelButtons}
