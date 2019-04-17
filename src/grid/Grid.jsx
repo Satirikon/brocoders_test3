@@ -11,6 +11,7 @@ const BUTTON_PADDING = 5;
 class Grid extends Component {
   constructor(props) {
     super(props);
+    this.timer = null;
 
     this.state = {
       rows: [...Array(props.initialHeight).keys()].map(index =>
@@ -22,10 +23,11 @@ class Grid extends Component {
       activeRowIndex: 0,
       activeColumnIndex: 0,
       isDelBtnRowVisible: false,
-      isDelBtnColVisible: false,
-      isDelBtnHovered: false
+      isDelBtnColVisible: false
     };
   }
+
+  clearTimer = () => (this.timer = null);
 
   hideDelButtons = () =>
     this.setState({
@@ -49,13 +51,10 @@ class Grid extends Component {
   };
 
   onGridMouseLeave = () => {
-    setTimeout(() => {
-      const { isDelBtnHovered } = this.state;
-      if (!isDelBtnHovered) this.hideDelButtons();
+    this.timer = setTimeout(() => {
+      if (this.timer) this.hideDelButtons();
     }, 200);
   };
-
-  onDelBtnMouseEnter = () => this.setState({ isDelBtnHovered: true });
 
   onAddColClick = () =>
     this.setState(prevState => ({
@@ -118,7 +117,7 @@ class Grid extends Component {
             style={{
               top: `${(activeRowIndex + 1) * cellSize + BUTTON_PADDING}px`
             }}
-            onMouseEnter={this.onDelBtnMouseEnter}
+            onMouseEnter={this.clearTimer}
             onMouseLeave={this.hideDelButtons}
             onClick={this.onDelRowClick}
           />
@@ -131,7 +130,7 @@ class Grid extends Component {
             style={{
               left: `${(activeColumnIndex + 1) * cellSize + BUTTON_PADDING}px`
             }}
-            onMouseEnter={this.onDelBtnMouseEnter}
+            onMouseEnter={this.clearTimer}
             onMouseLeave={this.hideDelButtons}
             onClick={this.onDelColClick}
           />
