@@ -12,9 +12,6 @@ const ActionButton = ({
   <button
     className={`action-btn ${className}`}
     style={{ height: `${cellSize}px`, width: `${cellSize}px`, ...style }}
-    onMouseOver={props.onDelBtnMouseEnter}
-    onMouseLeave={props.onDelBtnMouseLeave}
-    onClick={props.onClick}
     {...props}
   >
     {' '}
