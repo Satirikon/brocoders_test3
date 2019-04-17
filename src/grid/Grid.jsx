@@ -6,6 +6,8 @@ import { getUniqValue } from './grid.service';
 import './Grid.scss';
 import PropTypes from 'prop-types';
 
+const BUTTON_PADDING = 5;
+
 class Grid extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +23,6 @@ class Grid extends Component {
       activeColumnIndex: 0,
       isDelBtnRowVisible: false,
       isDelBtnColVisible: false,
-      delBtnColLeft: 0,
-      delBtnRowTop: 0,
       isDelBtnHovered: false
     };
   }
@@ -35,23 +35,16 @@ class Grid extends Component {
     });
 
   onColMouseOver = (e, rowIndex, colIndex) => {
-    const currentColumn = e.target;
     const { rows, columns } = this.state;
     let newState = {
-      ...this.state,
       activeRowIndex: rowIndex,
       activeColumnIndex: colIndex
     };
 
-    if (columns.length > 1) {
-      newState.isDelBtnColVisible = true;
-      newState.delBtnColLeft = currentColumn.offsetLeft;
-    }
+    if (columns.length > 1) newState.isDelBtnColVisible = true;
 
-    if (rows.length > 1) {
-      newState.isDelBtnRowVisible = true;
-      newState.delBtnRowTop = currentColumn.offsetTop;
-    }
+    if (rows.length > 1) newState.isDelBtnRowVisible = true;
+
     this.setState(newState);
   };
 
@@ -101,9 +94,10 @@ class Grid extends Component {
       columns,
       isDelBtnColVisible,
       isDelBtnRowVisible,
-      delBtnRowTop,
-      delBtnColLeft
+      activeRowIndex,
+      activeColumnIndex
     } = this.state;
+
     return (
       <div className="grid">
         <ActionButton
@@ -121,9 +115,11 @@ class Grid extends Component {
             className="del-btn-row"
             cellSize={cellSize}
             text="-"
-            style={{ top: `${delBtnRowTop}px` }}
-            onDelBtnMouseEnter={this.onDelBtnMouseEnter}
-            onDelBtnMouseLeave={this.hideDelButtons}
+            style={{
+              top: `${(activeRowIndex + 1) * cellSize + BUTTON_PADDING}px`
+            }}
+            onMouseEnter={this.onDelBtnMouseEnter}
+            onMouseLeave={this.hideDelButtons}
             onClick={this.onDelRowClick}
           />
         )}
@@ -132,9 +128,11 @@ class Grid extends Component {
             className="del-btn-col"
             cellSize={cellSize}
             text="-"
-            style={{ left: `${delBtnColLeft}px` }}
-            onDelBtnMouseEnter={this.onDelBtnMouseEnter}
-            onDelBtnMouseLeave={this.hideDelButtons}
+            style={{
+              left: `${(activeColumnIndex + 1) * cellSize + BUTTON_PADDING}px`
+            }}
+            onMouseEnter={this.onDelBtnMouseEnter}
+            onMouseLeave={this.hideDelButtons}
             onClick={this.onDelColClick}
           />
         )}
@@ -153,7 +151,7 @@ class Grid extends Component {
 Grid.propTypes = {
   initialWidth: PropTypes.number,
   initialHeight: PropTypes.number,
-  cellSize: PropTypes.string
+  cellSize: PropTypes.number
 };
 
 export default Grid;

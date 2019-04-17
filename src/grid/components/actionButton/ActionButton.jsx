@@ -11,10 +11,11 @@ const ActionButton = ({
 }) => (
   <button
     className={`action-btn ${className}`}
-    style={{ height: cellSize, width: cellSize, ...style }}
+    style={{ height: `${cellSize}px`, width: `${cellSize}px`, ...style }}
     onMouseOver={props.onDelBtnMouseEnter}
     onMouseLeave={props.onDelBtnMouseLeave}
     onClick={props.onClick}
+    {...props}
   >
     {' '}
     {text}{' '}
@@ -23,7 +24,7 @@ const ActionButton = ({
 
 ActionButton.propTypes = {
   className: PropTypes.string,
-  cellSize: PropTypes.string,
+  cellSize: PropTypes.number,
   text: PropTypes.string,
   style: PropTypes.shape({
     top: PropTypes.string,

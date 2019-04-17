@@ -26,7 +26,7 @@ const GridFields = ({
 );
 
 GridFields.propTypes = {
-  cellSize: PropTypes.string,
+  cellSize: PropTypes.number,
   onColMouseOver: PropTypes.func,
   onGridMouseLeave: PropTypes.func,
   rows: PropTypes.array,

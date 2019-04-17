@@ -21,7 +21,7 @@ const GridRow = ({ columns, cellSize, onColMouseOver, rowIndex }) => (
 
 GridRow.propTypes = {
   columns: PropTypes.array,
-  cellSize: PropTypes.string,
+  cellSize: PropTypes.number,
   onColMouseOver: PropTypes.func,
   rowIndex: PropTypes.number
 };
